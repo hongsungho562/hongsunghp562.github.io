@@ -1,0 +1,89 @@
+<!-- result.html -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>게임 결과</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            text-align: center;
+            padding: 50px;
+        }
+        h1 {
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+        #leaderboard {
+            list-style-type: none;
+            padding: 0;
+        }
+        #leaderboard li {
+            background-color: #f0f0f0;
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 1.2em;
+        }
+        #leaderboard li.rank-1 {
+            background-color: #ffd700; /* 금색 */
+        }
+        #leaderboard li.rank-2 {
+            background-color: #c0c0c0; /* 은색 */
+        }
+        #leaderboard li.rank-3 {
+            background-color: #cd7f32; /* 동색 */
+        }
+    </style>
+</head>
+<body>
+    <h1>게임 순위</h1>
+    <ul id="leaderboard">
+        <!-- 순위 리스트가 여기에 동적으로 추가됩니다 -->
+    </ul>
+    <button onclick="window.location.href='lobby.html';">다시 하기</button>
+    <button id="reset-button">메인</button>
+    
+    <script>
+        // 페이지가 로드되면 로컬 스토리지에서 점수를 불러와서 순위 표시
+        document.addEventListener("DOMContentLoaded", () => {
+            let players = JSON.parse(localStorage.getItem('players')) || [];
+            
+            // 순위표를 업데이트
+            const leaderboardList = document.getElementById('leaderboard');
+            leaderboardList.innerHTML = '';  // 기존 순위 초기화
+
+            players.forEach((player, index) => {
+                const listItem = document.createElement('li');
+                listItem.innerText = `${player.name}: ${player.score}점`;
+
+                // 1등, 2등, 3등을 위한 클래스 추가
+                if (index === 0) {
+                    listItem.classList.add('rank-1');
+                } else if (index === 1) {
+                    listItem.classList.add('rank-2');
+                } else if (index === 2) {
+                    listItem.classList.add('rank-3');
+                }
+
+                leaderboardList.appendChild(listItem);
+            });
+        });
+
+
+
+          // "메인" 버튼 클릭 시 로컬 스토리지 초기화 및 페이지 이동
+          document.getElementById("reset-button").addEventListener("click", () => {
+                localStorage.removeItem('players');
+
+                // 순위 초기화 후 게임 페이지로 이동
+                window.location.href = 'lobby.html'; // 게임 페이지로 이동
+            });
+
+
+            
+    </script>
+</body>
+</html>
